@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: bully-container
-          image: asgerleth/bully-app
+          image: dockerid/bully-app
           imagePullPolicy: IfNotPresent
           env:
             - name: WEB_PORT
@@ -30,7 +30,7 @@ spec:
               name: http
               protocol: TCP
         - name: webserver-container
-          image: asgerleth/webserver_bully
+          image: dockerid/webserver_bully # change to your own dockerid/webserver_bully
           imagePullPolicy: IfNotPresent
           env:
             - name: WEB_PORT
