@@ -1,0 +1,63 @@
+/* Fortune Cookie Generator Styles */
+
+html {
+  text-align: center;
+  padding: 2em;
+  font-family: Arial, Helvetica, sans-serif;
+}
+body {
+  background-color: rgba(255, 255, 255, 0.99);
+}
+/*Fortune Cookie */
+/*.fortune-cookie-saying-wrapper {
+  padding: 1em;
+  margin: 1em;
+  background-image: url('fortune-cookie2.png');
+  background-size: 700px; 
+  height: 400px; 
+  background-repeat: no-repeat;
+  background-position: center;
+ 
+}*/
+/*previous fortunes */
+ul {
+  list-style: none;
+  margin-left: -40px;
+  font-size: 0;
+}
+li {
+font-family: 'Open Sans Condensed', sans-serif;
+}
+/*img {
+  size: 100px; 
+}*/
+/*fortunes */
+p#fortune-cookie-text {
+  color: rgb(12, 12, 12);
+  margin-top: 40px; 
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-style: italic;
+  font-size: 20px; 
+  text-align: center;
+}
+/*Heading styling */
+h1, h2 {
+  font-family: 'Comic Sans MS', cursive; 
+  text-align: center;
+}
+h1 {
+font-size: 60px;
+}
+h2 {
+font-size: 20px; 
+}
+/*Button styling */
+button {
+display: inline-block;
+border-radius: 8px;
+box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+padding: 20px 50px;
+background-color: rgb(17, 0, 112);
+color: aliceblue;
+font-size: 20px; 
+}

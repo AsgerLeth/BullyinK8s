@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bully-app
+spec:
+  selector:
+    matchLabels:
+      app: bully-app
+  replicas: 7
+  template:
+    metadata:
+      name: bully-app
+      labels:
+        name: bully-app
+        app: bully-app
+    spec:
+      containers:
+        - name: bully-container
+          image: asgerleth/bully-app
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: WEB_PORT
+              value: "8080"
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+        - name: webserver-container
+          image: asgerleth/webserver
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: WEB_PORT
+              value: "8081"
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          ports:
+            - containerPort: 8081
+              name: http
+              protocol: TCP
