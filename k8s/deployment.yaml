@@ -11,7 +11,7 @@ spec:
     metadata:
       name: bully-app
       labels:
-        name: bully-app
+        name: bully-app 
         app: bully-app
     spec:
       containers:
@@ -30,7 +30,7 @@ spec:
               name: http
               protocol: TCP
         - name: webserver-container
-          image: asgerleth/webserver
+          image: asgerleth/webserver_bully
           imagePullPolicy: IfNotPresent
           env:
             - name: WEB_PORT
@@ -41,5 +41,5 @@ spec:
                   fieldPath: status.podIP
           ports:
             - containerPort: 8081
-              name: http
+              name: http-web-svc
               protocol: TCP

@@ -5,6 +5,8 @@ import socket
 import random
 import aiohttp
 import requests
+import json
+from kubernetes import client, config
 
 POD_IP = str(os.environ['POD_IP'])
 WEB_PORT = int(os.environ['WEB_PORT'])
@@ -44,6 +46,43 @@ async def run_bully():
         # Other pods in network
         print(other_pods)
         
+        # Check if there is a higher ID
+        higher_id = False
+        for pod_ip, pod_id in other_pods.items():
+            if pod_id > POD_ID:
+                higher_id = True
+                break
+        if higher_id:
+             for pod_ip in ip_list:
+                if (pod_id > POD_ID):
+                    endpoint = '/update_election'
+                    url = 'http://' + str(pod_ip) + ':' + str(WEB_PORT) + endpoint
+                    response = requests.post(url, json={"message": "election"})
+        else:
+            # Send coordinator to all other pods
+            for pod_ip in ip_list:
+                endpoint = '/update_coordinator'
+                url = 'http://' + str(pod_ip) + ':' + str(WEB_PORT) + endpoint
+                response = requests.post(url, json={"message": "coordinator", "ID": POD_ID})
+
+        config.load_kube_config()
+
+        api_instance = client.CoreV1Api()
+
+        body = {
+        "apiVersion: apps/v2"
+        }
+        node_list = api_instance.list_pod_for_all_namespaces(watch=False)
+        for node in node_list.items:
+            api_response = api_instance.patch_node(node.template.metadata.name.labels, body)
+            print("%s\t%s" % (node.metadata.name, node.metadata.labels))
+
+        
+            
+
+        
+        
+
         # Sleep a bit, then repeat
         await asyncio.sleep(2)
     
@@ -56,12 +95,20 @@ async def receive_answer(request):
     pass
 
 #POST /receive_election
-async def receive_election(request):
+async def update_election(request):
     pass
 
 #POST /receive_coordinator
-async def receive_coordinator(request):
-    pass
+async def update_coordinator(request):
+    # Send coordinator to all other pods
+    message = request.json()
+    string = json.loads(message)
+    if string["message"] == "coordinator":
+        print("I am the coordinator")
+    return web.json_response("OK")
+
+
+
 
 async def background_tasks(app):
     task = asyncio.create_task(run_bully())
@@ -73,7 +120,7 @@ if __name__ == "__main__":
     app = web.Application()
     app.router.add_get('/pod_id', pod_id)
     app.router.add_post('/receive_answer', receive_answer)
-    app.router.add_post('/receive_election', receive_election)
-    app.router.add_post('/receive_coordinator', receive_coordinator)
+    app.router.add_post('/receive_election', update_election)
+    app.router.add_post('/receive_coordinator', update_coordinator)
     app.cleanup_ctx.append(background_tasks)
     web.run_app(app, host='0.0.0.0', port=WEB_PORT)
