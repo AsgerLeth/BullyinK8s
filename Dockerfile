@@ -10,6 +10,7 @@ RUN pip install --upgrade pip
 # Copy requirements to container and install
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
+
  
 # Upgrade pip
 RUN pip install --upgrade pip

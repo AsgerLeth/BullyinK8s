@@ -6,18 +6,18 @@ spec:
   selector:
     matchLabels:
       app: bully-app
-  replicas: 7
+  replicas: 4
   template:
     metadata:
       name: bully-app
       labels:
-        name: bully-app 
+        name: bully-app
         app: bully-app
     spec:
       containers:
         - name: bully-container
-          image: dockerid/bully-app
-          imagePullPolicy: IfNotPresent
+          image: asgerleth/bully-app:latest
+          imagePullPolicy: Always
           env:
             - name: WEB_PORT
               value: "8080"
@@ -30,7 +30,7 @@ spec:
               name: http
               protocol: TCP
         - name: webserver-container
-          image: dockerid/webserver_bully # change to your own dockerid/webserver_bully
+          image: asgerleth/webserver_bully # change to your own dockerid/webserver_bully
           imagePullPolicy: IfNotPresent
           env:
             - name: WEB_PORT

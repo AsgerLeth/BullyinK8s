@@ -4,7 +4,7 @@ metadata:
   name: webservice
 spec:
   selector:
-    leader: true
+    leader: "true"
   ports:
     - protocol: TCP
       port: 80
